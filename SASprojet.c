@@ -181,13 +181,10 @@ void afficher_moyenne_generale(){
     int countDep=0;
     char departemets[20][50];
 
-  for (int i = 0; i < nbr_etudient; i++)
-  {
+  for(int i = 0; i < nbr_etudient; i++){
     int deja_inserer = 0;
-    for (int j = 0; j < i; j++)
-    {
-      if (strcmp(etudient_list[i].departement, etudient_list[j].departement) == 0)
-      {
+    for (int j = 0; j < i; j++){
+      if (strcmp(etudient_list[i].departement, etudient_list[j].departement) == 0){
         deja_inserer = 1;
         break;
       }
@@ -200,15 +197,12 @@ void afficher_moyenne_generale(){
     }
   }
 
-  for (int i = 0; i < countDep; i++)
-  {
+  for (int i = 0; i < countDep; i++){
     float somme = 0;
     int departement_length = 0;
 
-    for (int j = 0; j < nbr_etudient; j++)
-    {
-      if (strcmp(departemets[i], etudient_list[j].departement) == 0)
-      {
+    for (int j = 0; j < nbr_etudient; j++){
+      if (strcmp(departemets[i], etudient_list[j].departement) == 0){
         somme += etudient_list[j].note_generale;
         departement_length++;
       }
@@ -288,7 +282,7 @@ void afficher_statistiques() {
                 jst_etudients[i]=etudient_list[i];
             }
 
-            for (int i = 0; i < nbr_etudient - 1 ; i++){
+            for (int i = 0; i < nbr_etudient -1; i++){
                 for(int j = i+1; j < nbr_etudient; j++){
                     if(jst_etudients[i].note_generale < jst_etudients[j].note_generale){
                         temp = jst_etudients[i];
@@ -401,14 +395,101 @@ void afficher_tous_en_departement(){
     }
 }
 
-void tri_etudients(){
 
-//olh ila ghnmot bn3as sf
+void tri_etudients() {
+    int choix;
+    etudient temp;
 
+    printf("1- Trier les etudients par nom (A a Z).\n");
+    printf("2- Trier les etudients par nom (Z a A).\n");
+    printf("3- Trier les etudients par note generale (du plus eleve au plus faible).\n");
+    printf("4- Trier les etudients par note generale (du plus faible au plus eleve).\n");
+    printf("5- Trier les etudients par statut de reussite (moyenne >= 10/20).\n");
+    scanf("%d", &choix);
+
+    switch (choix) {
+        case 1:
+            // les noms mn A htal Z
+            for (int i = 0; i < nbr_etudient - 1; i++) {
+                for (int j = i + 1; j < nbr_etudient; j++) {
+                    if (strcmp(etudient_list[i].nom, etudient_list[j].nom) > 0) {
+                        temp = etudient_list[i];
+                        etudient_list[i] = etudient_list[j];
+                        etudient_list[j] = temp;
+                    }
+                }
+            }
+            break;
+
+        case 2:
+            // les noms mn Z htal A
+            for (int i = 0; i < nbr_etudient - 1; i++) {
+                for (int j = i + 1; j < nbr_etudient; j++) {
+                    if (strcmp(etudient_list[i].nom, etudient_list[j].nom) < 0) {
+                        temp = etudient_list[i];
+                        etudient_list[i] = etudient_list[j];
+                        etudient_list[j] = temp;
+                    }
+                }
+            }
+            break;
+
+        case 3:
+            // note general mn lkbir l sghir
+            for (int i = 0; i < nbr_etudient - 1; i++) {
+                for (int j = i + 1; j < nbr_etudient; j++) {
+                    if (etudient_list[i].note_generale < etudient_list[j].note_generale) {
+                        temp = etudient_list[i];
+                        etudient_list[i] = etudient_list[j];
+                        etudient_list[j] = temp;
+                    }
+                }
+            }
+            break;
+
+        case 4:
+            // note general mn sghir lkbir
+            for (int i = 0; i < nbr_etudient - 1; i++) {
+                for (int j = i + 1; j < nbr_etudient; j++) {
+                    if (etudient_list[i].note_generale > etudient_list[j].note_generale) {
+                        temp = etudient_list[i];
+                        etudient_list[i] = etudient_list[j];
+                        etudient_list[j] = temp;
+                    }
+                }
+            }
+            break;
+
+        case 5:
+            // les etudients lli najhin  (note generale >= 10)
+            for (int i = 0; i < nbr_etudient - 1; i++) {
+                for (int j = i + 1; j < nbr_etudient; j++) {
+                    if ((etudient_list[i].note_generale >= 10) && (etudient_list[j].note_generale < 10)) {
+                        temp = etudient_list[i];
+                        etudient_list[i] = etudient_list[j];
+                        etudient_list[j] = temp;
+                    }
+                }
+            }
+            break;
+
+        default:
+            printf("Choix invalide.\n");
+            return;
+    }
+
+    // Display the sorted list
+    printf("Liste des etudiants tries:\n");
+    for (int i = 0; i < nbr_etudient; i++) {
+        printf("  L'etudiant N%d\n", i + 1);
+        printf("    ID: %d\n", etudient_list[i].ID);
+        printf("    Nom: %s\n", etudient_list[i].nom);
+        printf("    Prenom: %s\n", etudient_list[i].prenom);
+        printf("    Date de naissance: %02d/%02d/%04d\n", etudient_list[i].date_naissance.jour, etudient_list[i].date_naissance.mois, etudient_list[i].date_naissance.annee);
+        printf("    Note generale: %.2f\n", etudient_list[i].note_generale);
+        printf("---------\n");
+    }
 }
-
-
-
 
 
 
@@ -498,7 +579,7 @@ break;
 
 case 9 :
     tri_etudients();
-    goto The_Menu;
+    //goto The_Menu;
 break;
 
 default:
